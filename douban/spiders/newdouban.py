@@ -17,12 +17,13 @@ class NewdoubanSpider(scrapy.Spider):
 
     def parse(self, response: HtmlResponse):
         sel = Selector(response)
-        movie_items = sel.css('#content > div>  div.article > ul.chart-dashed-list > li > div.media__body')
-        for movie_sel in movie_items:
+        book_items = sel.css('#content > div>  div.article > ul.chart-dashed-list > li > div.media__body')
+        for book_sel in book_items:
             item = DoubanItem()
-            item['bTitle'] = movie_sel.css(' a::text').extract_first()
-            item['bTime'] = movie_sel.css('p.subject-abstract::text').extract_first().replace(' ','').split('/')[1]
-            item['bScore'] = movie_sel.css('span.color-red::text').extract_first()
+            item['bTitle'] = book_sel.css(' a::text').extract_first()
+            item['bId'] = book_sel.css('a::attr(href)').extract_first().split('/')[-2]
+            item['bTime'] = book_sel.css('p.subject-abstract::text').extract_first().replace(' ','').split('/')[-4]
+            item['bScore'] = book_sel.css('span.color-red::text').extract_first()
             yield item
 
         

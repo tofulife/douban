@@ -62,9 +62,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'douban.pipelines.DoubanPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'douban.pipelines.DoubanPipeline': 300,
+    # 'douban.pipelines.mysqlPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -102,3 +103,11 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 
 # 是否遵守爬虫协议
 ROBOTSTXT_OBEY = True
+
+
+# 数据库配置
+MYSQL_HOST = "127.0.0.1"
+MYSQL_PORT = 3306
+MYSQL_DBNAME = "douban"
+MYSQL_USER = "tofu"
+MYSQL_PASSWORD = "Tofu1234!"
