@@ -65,9 +65,13 @@ class mysqlPipeline(object):
         insert_sql = """
         insert into book(bId, bScore, bTitle, bDate) VALUES (%s,%s,%s,%s)
         """
-        cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bTime']))
+        cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bDate']))
  
     def handle_error(self, failure):
         if failure:
             # 打印错误信息
             print(failure)
+
+            
+    def close_spider(self, spider):
+        self.dbpool.close()

@@ -63,8 +63,8 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'douban.pipelines.DoubanPipeline': 300,
-    # 'douban.pipelines.mysqlPipeline': 300,
+   # 'douban.pipelines.DoubanPipeline': 300,
+    'douban.pipelines.mysqlPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -11,5 +11,5 @@ class DoubanItem(scrapy.Item):
     # name = scrapy.Field()
     bTitle = scrapy.Field()
     bScore = scrapy.Field()
-    bTime = scrapy.Field()
+    bDate = scrapy.Field()
     bId = scrapy.Field()
