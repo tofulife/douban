@@ -73,5 +73,14 @@ class mysqlPipeline(object):
             print(failure)
 
             
+    def open_spider(self, spider):
+        print('爬虫开始！')
+        truncate_sql = 'truncate table book'
+        self.dbpool.runOperation(truncate_sql)
+        print('数据库清空！！！')
+        
+        # self.fp = open('./demo.txt','w',encoding='utf-8')
+
+    
     def close_spider(self, spider):
         self.dbpool.close()
