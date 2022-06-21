@@ -69,13 +69,13 @@ class mysqlPipeline(object):
         insert into book(bId, bScore, bTitle, bDate) VALUES (%s,%s,%s,%s)
         """
 
-        pic_path = 'images/book'
+        pic_path = '../images/book'
         if  self.check_duplicate(cursor, item) < 1:
             cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bDate']))
             self.download_picture(item,pic_path)
         else:
             update_book= """update book set bScore=%s,bTitle=%s,bDate=%s where bId=%s"""
-            cursor.execute(update_book, (item['bScore'], item['bTitle']+"222", item['bDate'],item['bId']))
+            cursor.execute(update_book, (item['bScore'], item['bTitle'], item['bDate'],item['bId']))
             print("update 成功")
 
     def check_duplicate(self, cursor,item):
@@ -91,7 +91,7 @@ class mysqlPipeline(object):
         resp = requests.get(item['bPicUrl'])
         print("连接为：%s",item['bPicUrl'])
         if resp.status_code == 200:
-            with open(f'images/book/{filename}', 'wb') as file:
+            with open(f'../images/book/{filename}', 'wb') as file:
                 file.write(resp.content)
 
         
