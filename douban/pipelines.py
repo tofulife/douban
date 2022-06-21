@@ -69,7 +69,7 @@ class mysqlPipeline(object):
         insert into book(bId, bScore, bTitle, bDate) VALUES (%s,%s,%s,%s)
         """
 
-        pic_path = '../images/book'
+        pic_path = '../../images/book'
         if  self.check_duplicate(cursor, item) < 1:
             cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bDate']))
             self.download_picture(item,pic_path)
@@ -87,11 +87,10 @@ class mysqlPipeline(object):
         if not os.path.exists(path):
             os.makedirs(path)
         filename = item['bId']+".jpg"
-        print("下载图片%s",filename)
+        print("下载图片%s连接为：%s"%(filename,item['bPicUrl']))
         resp = requests.get(item['bPicUrl'])
-        print("连接为：%s",item['bPicUrl'])
         if resp.status_code == 200:
-            with open(f'../images/book/{filename}', 'wb') as file:
+            with open(f'../../images/book/{filename}', 'wb') as file:
                 file.write(resp.content)
 
         
