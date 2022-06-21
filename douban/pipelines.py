@@ -8,6 +8,8 @@
 from itemadapter import ItemAdapter
 import pymysql
 from twisted.enterprise import adbapi
+import requests
+import os
 
 
 class DoubanPipeline:
@@ -57,6 +59,7 @@ class mysqlPipeline(object):
         """
         # cursor 在调用self.dbpool.runInteraction(self.do_insert, item)的时候 会自动传递过去
         query = self.dbpool.runInteraction(self.do_insert, item)  # 指定操作方法和操作数据
+
         # 添加异常处理
         query.addCallback(self.handle_error)  # 处理异常
  
@@ -65,7 +68,33 @@ class mysqlPipeline(object):
         insert_sql = """
         insert into book(bId, bScore, bTitle, bDate) VALUES (%s,%s,%s,%s)
         """
-        cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bDate']))
+
+        pic_path = 'images/book'
+        if  self.check_duplicate(cursor, item) < 1:
+            cursor.execute(insert_sql, (item['bId'], item['bScore'], item['bTitle'], item['bDate']))
+            self.download_picture(item,pic_path)
+        else:
+            update_book= """update book set bScore=%s,bTitle=%s,bDate=%s where bId=%s"""
+            cursor.execute(update_book, (item['bScore'], item['bTitle']+"222", item['bDate'],item['bId']))
+            print("update 成功")
+
+    def check_duplicate(self, cursor,item):
+        check_sql = """select bId,bTitle from book where bId=%s"""
+        num = cursor.execute(check_sql, (item['bId']))
+        return num
+
+    def download_picture(self,item,path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        filename = item['bId']+".jpg"
+        print("下载图片%s",filename)
+        resp = requests.get(item['bPicUrl'])
+        print("连接为：%s",item['bPicUrl'])
+        if resp.status_code == 200:
+            with open(f'images/book/{filename}', 'wb') as file:
+                file.write(resp.content)
+
+        
  
     def handle_error(self, failure):
         if failure:
@@ -75,11 +104,10 @@ class mysqlPipeline(object):
             
     def open_spider(self, spider):
         print('爬虫开始！')
-        truncate_sql = 'truncate table book'
-        self.dbpool.runOperation(truncate_sql)
-        print('数据库清空！！！')
+        # truncate_sql = 'truncate table book'
+        # self.dbpool.runOperation(truncate_sql)
+        # print('数据库清空！！！')
         
-        # self.fp = open('./demo.txt','w',encoding='utf-8')
 
     
     def close_spider(self, spider):

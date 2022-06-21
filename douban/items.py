@@ -13,3 +13,4 @@ class DoubanItem(scrapy.Item):
     bScore = scrapy.Field()
     bDate = scrapy.Field()
     bId = scrapy.Field()
+    bPicUrl = scrapy.Field() #图书封面url
