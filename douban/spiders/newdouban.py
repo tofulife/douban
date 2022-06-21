@@ -11,7 +11,7 @@ class NewdoubanSpider(scrapy.Spider):
     # start_urls = ['https://book.douban.com/latest?subcat=%E5%85%A8%E9%83%A8&p=2']
 
     def start_requests(self):
-        for page in range(19):
+        for page in range(1):
             yield Request(url=f'https://book.douban.com/latest?subcat=%E5%85%A8%E9%83%A8&p={page}')
 
 
@@ -37,6 +37,7 @@ class NewdoubanSpider(scrapy.Spider):
         item['bDate']= self.str_format(response.meta['bDate'])
         item['bScore'] = self.str_format(response.meta['bScore'])
         item['bId'] = self.str_format(response.url.split('/')[-2])
+        item['bPicUrl'] = self.str_format(sel.css('#mainpic a::attr(href)').extract_first())
         yield item
 
     def str_format(self,str):
