@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import scrapy
 from scrapy import Selector, Request
 from scrapy.http import HtmlResponse
@@ -11,7 +12,7 @@ class NewdoubanSpider(scrapy.Spider):
     # start_urls = ['https://book.douban.com/latest?subcat=%E5%85%A8%E9%83%A8&p=2']
 
     def start_requests(self):
-        for page in range(1):
+        for page in range(19):
             yield Request(url=f'https://book.douban.com/latest?subcat=%E5%85%A8%E9%83%A8&p={page}')
 
 
